@@ -45,26 +45,12 @@
     )
 )
 
-(defun in(e l)
-    (cond
-        ((null l) nil)
-        (T (or (= e (car l)) (in e (cdr l))))
-    )
-)
-
-(defun inter(p q res)
-    (cond
-        ((null p) nil)
-        ((null q) nil)
-        (T 
-            (inter (cdr p) (cdr q)
-                (cond
-                    ((and (= (car p) (car q)) (not (in (car p) res)))
-                     (append res (list(car q)))
-                    ) 
-                )
-            )
-        )
+(defun inter(l1 l2 res)
+    (cond ((and (null l1) (null l2)) res)
+          ((null l1) (inter l2 l1 res))
+          ((and (member (car l1) l2) (not (member (car l1) res)))
+              (inter (cdr l1) l2 (append res (list (car l1)))))
+          (T (inter (cdr l1) l2 res))
     )
 )
 
@@ -99,5 +85,4 @@
 (run 'fibo '(2))
 (run 'fibo '(-1))
 
-(run 'in '(5 (1 2 3)))
-(run 'in '(3 (1 2 3)))
+(run 'inter '((1 2 3 4 5 4 6 7) (4 5 6 7 7 8 9) nil))
